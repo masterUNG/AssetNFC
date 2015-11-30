@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
     private NfcAdapter nfcAdapter;
     private String tagNFCString;
     private static final String TAG = "Suthep";
+    private String nameString, locationString, statusString;
 
 
     @Override
@@ -142,6 +143,7 @@ public class MainActivity extends ActionBarActivity {
 
             NdefRecord ndefRecord = ndefRecords[0];
 
+            //สิ่งที่อ่านได้จาก NFC
             tagNFCString = getTextFromNdefRecord(ndefRecord);
 
             // txtTagContent.setText(tagNFCString);
@@ -149,11 +151,35 @@ public class MainActivity extends ActionBarActivity {
             //Log.d(TAG, "NFC read ==> " + tagNFCString);
             Log.d(TAG, tagNFCString);
 
+            searchMyNFC(tagNFCString);
+
         } else {
             Toast.makeText(this, "No NDEF records found!", Toast.LENGTH_SHORT).show();
         }
 
     }//readTextFromMessage
+
+    private void searchMyNFC(String tagNFCString) {
+
+        try {
+
+            ManageTABLE objManageTABLE = new ManageTABLE(this);
+            String[] strMyResult = objManageTABLE.searchTagNFC(tagNFCString);
+            nameString = strMyResult[2];
+            locationString = strMyResult[3];
+            statusString = strMyResult[4];
+
+            Log.d("Suthep", "Name = " + nameString);
+            Log.d("Suthep", "Location = " + locationString);
+            Log.d("Suthep", "status = " + statusString);
+
+
+
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "No This NFC in my Database", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
     private void enableForegroundDispatchSystem() {

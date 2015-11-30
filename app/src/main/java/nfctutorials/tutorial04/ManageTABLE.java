@@ -42,6 +42,39 @@ public class ManageTABLE {
 
     }//Constructor
 
+    //Search tagNFC
+    public String[] searchTagNFC(String strNFC) {
+
+        try {
+
+            String[] strResult = null;
+            Cursor objCursor = readSqLiteDatabase.query(TABLE_DEVICE,
+                    new String[]{COLUMN_ID, COLUMN_TAGNFC, COLUMN_NAME, COLUMN_LOCATION, COLUMN_STATUS},
+                    COLUMN_TAGNFC + "=?",
+                    new String[]{String.valueOf(strNFC)},
+                    null, null, null, null);
+            if (objCursor != null) {
+                if (objCursor.moveToFirst()) {
+
+                    strResult = new String[5];
+                    strResult[0] = objCursor.getString(0);
+                    strResult[1] = objCursor.getString(1);
+                    strResult[2] = objCursor.getString(2);
+                    strResult[3] = objCursor.getString(3);
+                    strResult[4] = objCursor.getString(4);
+
+                }   // if
+            }   // if
+            objCursor.close();
+            return strResult;
+
+        } catch (Exception e) {
+            return null;
+        }
+
+        //return new String[0];
+    }
+
 
     //Add New Value to SQLite
     public long addUser(String strFirstName, String strLastName, String strUsername, String strPassword, String strUserType) {
